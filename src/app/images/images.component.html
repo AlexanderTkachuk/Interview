@@ -1,0 +1,47 @@
+<div class="clearGallery" *ngIf="!pictures.length">
+  <h1>Don`t have pictures</h1>
+  <div class = "reload pointer flexCenter" (click)="getImagesMethod(page)">Reload data <span class="material-icons">replay</span></div>
+</div>
+<div class="card-wrapper" *ngIf=" pictures.length; trackBy:trackFunc">
+  <div class="card" *ngFor="let picture of pictures; let idx = index " (click)="selectPicture(picture.id, idx)">
+    <img [src]="picture.cropped_picture">
+  </div>
+</div>
+
+<div id="overlay" *ngIf="selectedPicture">
+  <div class="popup">
+    <div class="img_wrapp">
+      <img [src]="selectedPicture.full_picture" class="img">
+    </div>
+    <div class="content_wrapp white">
+      <div class="author">{{selectedPicture.author}}</div>
+      <div class="camera">{{selectedPicture.camera}}</div>
+      <div class="tags">{{selectedPicture.tags}}</div>
+    </div>
+  </div>
+
+  <div class="shareAndClose white">
+    <div class="share pointer" (click)="share()"><i class="fas fa-share"></i></div>
+    <div class="closeModal pointer" (click)="closeModal('modal')">&times;</div>
+  </div>
+
+  <div (click)="swipe('prev')" class="swipe pointer white left">&#x2190;</div>
+  <div (click)="swipe('next')" class="swipe pointer white right">&#x2192;</div>
+</div>
+<div class="shareLink" *ngIf="shareLink">
+  <div class="copyBlock" (click)="copyLink()">
+    <input #copiesLink type="text" [value]="shareLink">
+    <span class="material-icons">
+      content_copy
+    </span>
+  </div>
+  <div class="closeShare black pointer" (click)="closeModal('shareLink')">&times;</div>
+</div>
+<mat-paginator *ngIf=" pictures.length" [length]="pagination.length*10+1" [pageSize]="10"
+  (page)="pageChange($event)">
+</mat-paginator>
+
+
+<!-- <div class="loader flexCenter" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div> -->
